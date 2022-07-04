@@ -67,22 +67,22 @@ export function ConvertTreeToTable(tree: TreeNode): Table {
   return table
 }
 
-export function RenumberXLocal(table: Table) {
+export function RenumberLastRowXLocal(table: Table) {
+  // Only needed if last row is actually missing
   const rows = table.data.length
   const cols = table.data[0].length
-  for (let i = 0; i < rows; i++) {
-    let currentValue = table.data[i][0].node?.Value
-    let x = -1
-    for (let j = 0; j < cols; j++) {
-      if (currentValue === table.data[i][j].node?.Value) {
-        x += 1
-      }
-      else {
-        currentValue = table.data[i][j].node?.Value
-        x = 0
-      }
-      table.data[i][j].xLocal = x
+  const i = rows - 1
+  let currentValue = table.data[i][0].node?.Value
+  let x = -1
+  for (let j = 0; j < cols; j++) {
+    if (currentValue === table.data[i][j].node?.Value) {
+      x += 1
     }
+    else {
+      currentValue = table.data[i][j].node?.Value
+      x = 0
+    }
+    table.data[i][j].xLocal = x
   }
 }
 export function ColumnAddLeft(table: Table, index: number) {
@@ -96,7 +96,7 @@ export function ColumnAddLeft(table: Table, index: number) {
     table.data[i].splice(index, 0, currentCell)
   }
 
-  RenumberXLocal(table)
+  RenumberLastRowXLocal(table)
 }
 
 export function ColumnAddMissing(table: Table) {
@@ -114,7 +114,7 @@ export function ColumnAddMissing(table: Table) {
       if (curr.node && curr.xLocal === curr.node.Children.length - 1)
         continue
       ColumnAddLeft(table, j)
-      j = 0
+      j = -1
     }
   }
 }
@@ -184,10 +184,6 @@ export function TableAddMissingCells(table: Table) {
     ColumnAddMissing(table)
     TableAddEmptyRow(table)
     TableFillLastRow(table)
-    ColumnAddMissing(table)
-    // const rows = table.data.length
-    // console.log(emptyRow)
-    // console.log(table.data[rows - 1])
     if (table.data.length > 2)
       break
   }

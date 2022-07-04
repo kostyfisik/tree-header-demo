@@ -52,7 +52,7 @@ const initTree: TreeNode = {
 
 const table = ConvertTreeToTable(initTree)
 TableAddMissingCells(table)
-ColumnAddLeft(table, 0)
+// ColumnAddLeft(table, 0)
 console.log('after all', table.data)
 
 // console.log(table)
