@@ -55,15 +55,15 @@ export function ToPrint(table: Table): TablePrint {
 
 export function ConvertTreeToTable(tree: TreeNode): Table {
   const table: Table = { data: [] }
-  const initColsCount = tree.Children.length
+  //   const initColsCount = tree.Children.length
   table.data[0] = []
-  for (let i = 0; i < initColsCount; i++) {
-    table.data[0][i] = {
-      node: tree.Children[i],
-      xLocal: 0,
-      yLocal: 0,
-    }
+  //   for (let i = 0; i < initColsCount; i++) {
+  table.data[0][0] = {
+    node: tree,
+    xLocal: 0,
+    yLocal: 0,
   }
+  //   }
   return table
 }
 
@@ -184,7 +184,7 @@ export function TableAddMissingCells(table: Table) {
     ColumnAddMissing(table)
     TableAddEmptyRow(table)
     TableFillLastRow(table)
-    if (table.data.length > 2)
+    if (table.data.length > 42)
       break
   }
 }
