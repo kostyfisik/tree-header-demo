@@ -1,59 +1,67 @@
 <script setup lang="ts">
-const user = useUserStore()
-const name = $ref(user.savedName)
+/* eslint-disable no-console */
+import type { TreeNode } from '../TreeTools'
+import {
+  ColumnAddLeft,
+  ConvertTreeToTable,
+  TableAddMissingCells,
+  ToPrint, isRowNeeded,
+} from '../TreeTools'
 
-const router = useRouter()
-const go = () => {
-  if (name)
-    router.push(`/hi/${encodeURIComponent(name)}`)
+const initTree: TreeNode = {
+  VerticalSpan: 1,
+  Color: 'White',
+  Value: 'Table',
+  Children: [
+    {
+      VerticalSpan: 1,
+      Color: 'Orange',
+      Value: '1',
+      Children: [
+        {
+          VerticalSpan: 1,
+          Color: 'Green',
+          Value: '4',
+          Children: [{ VerticalSpan: 1, Color: 'Purple', Value: '7', Children: [] }],
+        },
+        {
+          VerticalSpan: 1,
+          Color: 'Green',
+          Value: '5',
+          Children: [{ VerticalSpan: 1, Color: 'Purple', Value: '8', Children: [] }],
+        },
+      ],
+    },
+    {
+      VerticalSpan: 1,
+      Color: 'Orange',
+      Value: '2',
+      Children: [{ VerticalSpan: 2, Color: 'Green', Value: '6', Children: [] }],
+    },
+    {
+      VerticalSpan: 2,
+      Color: 'Orange',
+      Value: '3',
+      Children: [
+        { VerticalSpan: 1, Color: 'Purple', Value: '9', Children: [] },
+        { VerticalSpan: 1, Color: 'Purple', Value: '10', Children: [] },
+      ],
+    },
+  ],
 }
 
-const { t } = useI18n()
+const table = ConvertTreeToTable(initTree)
+TableAddMissingCells(table)
+ColumnAddLeft(table, 0)
+console.log('after all', table.data)
+
+// console.log(table)
 </script>
 
 <template>
-  <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
+  <div><ShowTable :table="ToPrint(table)" /></div>
 
-    <div py-4 />
-
-    <input
-      id="input"
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      :aria-label="t('intro.whats-your-name')"
-      type="text"
-      autocomplete="false"
-      p="x4 y2"
-      w="250px"
-      text="center"
-      bg="transparent"
-      border="~ rounded gray-200 dark:gray-700"
-      outline="none active:none"
-      @keydown.enter="go"
-    >
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
-
-    <div>
-      <button
-        btn m-3 text-sm
-        :disabled="!name"
-        @click="go"
-      >
-        {{ t('button.go') }}
-      </button>
-    </div>
-  </div>
+  is row needed = {{ isRowNeeded(table) }}
 </template>
 
 <route lang="yaml">
