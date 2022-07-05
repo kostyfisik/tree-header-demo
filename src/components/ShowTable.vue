@@ -9,17 +9,25 @@ const props = defineProps<{
 function setStyle(table: TablePrint, i: number,
   j: number): string {
   const cell = table.data[i][j]
-  let formatString = `background-color: ${cell.color};`
+  let formatString = 'background-color: '
+  formatString += cell.color
+  formatString += ';'
   const borderWidth = '4px'
   if (j > 0) {
     const cellLeft = table.data[i][j - 1]
-    if (JSON.stringify(cell.path) !== JSON.stringify(cellLeft.path))
-      formatString += `\nborder-left: ${borderWidth} solid black;`
+    if (JSON.stringify(cell.path) !== JSON.stringify(cellLeft.path)) {
+      formatString += '\nborder-left: '
+      formatString += borderWidth
+      formatString += ' solid black;'
+    }
   }
   if (i > 0) {
     const cellUp = table.data[i - 1][j]
-    if (JSON.stringify(cell.path) !== JSON.stringify(cellUp.path))
-      formatString += `\nborder-top: ${borderWidth} solid black;`
+    if (JSON.stringify(cell.path) !== JSON.stringify(cellUp.path)) {
+      formatString += '\nborder-top: '
+      formatString += borderWidth
+      formatString += ' solid black;'
+    }
   }
   // border: 2px solid gray;
 
