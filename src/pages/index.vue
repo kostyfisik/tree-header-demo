@@ -57,8 +57,3 @@ watch([col, isAddCol, row, isAddRow, isBefore], () => {
     </pre>
   </div>
 </template>
-
-<route lang="yaml">
-meta:
-  layout: home
-</route>
