@@ -9,7 +9,6 @@ import { initTree } from '../initTree'
 import type { TreeNode } from '../TreeTools'
 
 Object.freeze(initTree)
-// const updatedTree = ref(initTree)
 
 const table = ConvertTreeToTable(initTree)
 const isAddCol = ref(true)
@@ -51,9 +50,7 @@ watch([col, isAddCol, row, isAddRow, isBefore], () => {
     :max-col="table.data[0].length - 1"
     :max-row="table.data.length - 1"
   />
-  <!-- <ShowTable :table="ToPrint(ConvertTreeToTable(newTree(initTree)))" /> -->
   <ShowTable :table="ToPrint(ConvertTreeToTable(newT))" />
-  <!-- <ShowTable :table="ToPrint(ConvertTreeToTable(newT2))" /> -->
   <div>
     <pre class="text-left">
 {{ JSON.stringify(newT, null, 2) }}

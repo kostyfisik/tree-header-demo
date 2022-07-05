@@ -90,3 +90,10 @@ const row = computed(() => {
     Adding row before position {{ row }} ...
   </div>
 </template>
+
+<style>
+input {
+    color: black;
+    padding: 10px;
+}
+</style>
