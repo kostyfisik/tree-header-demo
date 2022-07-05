@@ -196,7 +196,7 @@ export function TableAddMissingCells(table: Table) {
   }
 }
 
-export function AddNodeBeforeCol(initTree: TreeNode, col: number) {
+export function AddNodeCol(initTree: TreeNode, col: number, isBefore: boolean) {
   const table = ConvertTreeToTable(initTree)
   const cellToCopy = table.data[table.data.length - 1][col]
   return produce(initTree, (draftTree) => {
@@ -212,7 +212,9 @@ export function AddNodeBeforeCol(initTree: TreeNode, col: number) {
       node = node.Children[i]
     const ChildrenCopy = JSON.parse(JSON.stringify(node.Children[childIndex]))
     ChildrenCopy.Color = 'Blue'
-    node.Children.splice(childIndex, 0, ChildrenCopy)
+
+    const position = isBefore ? 0 : 1
+    node.Children.splice(childIndex + position, 0, ChildrenCopy)
   })
 }
 

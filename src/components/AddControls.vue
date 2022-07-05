@@ -6,10 +6,18 @@ const props = defineProps<{
   row: number
   maxCol: number
   maxRow: number
+  isBefore: boolean
 }>()
 const emit = defineEmits(['update:isAddCol', 'update:isAddRow',
   'update:col', 'update:row',
+  'update:isBefore',
 ])
+
+const isBefore = ref(true)
+watch(isBefore, () => {
+  emit('update:isBefore', isBefore.value)
+})
+
 const isAddCol = ref(true)
 const isAddRow = ref(true)
 watch(isAddCol, () => {
@@ -36,11 +44,11 @@ const col = computed(() => {
   return init
 })
 
-const rowInput = ref('0')
+const rowInput = ref('1')
 const row = computed(() => {
   if (isNaN(parseInt(rowInput.value)) || rowInput.value === '') {
-    emit('update:row', 0)
-    return 0
+    emit('update:row', 1)
+    return 1
   }
   let init = parseInt(rowInput.value)
   if (init > props.maxRow)
@@ -55,16 +63,20 @@ const row = computed(() => {
 
 <template>
   <div class="m-4">
+    <input v-model="isBefore" type="checkbox">
+    <span class="m-4"> column position</span>
+  </div>
+  <div class="m-4">
     <input v-model="isAddCol" type="checkbox">
     <span class="m-4">
-      add colum before position</span>
+      add column {{ isBefore ? 'before' : 'after' }} position</span>
     <input v-model="colInput" type="number">
   </div>
 
   <div class="m-4">
     <input v-model="isAddRow" type="checkbox">
     <span class="m-4">
-      add row before position</span>
+      add row before/after position</span>
     <input v-model="rowInput" type="number">
   </div>
 

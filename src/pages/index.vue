@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  AddNodeBeforeCol,
+  AddNodeCol,
   AddSpanForRow,
   ConvertTreeToTable,
   ToPrint,
@@ -14,21 +14,22 @@ Object.freeze(initTree)
 const table = ConvertTreeToTable(initTree)
 const isAddCol = ref(true)
 const isAddRow = ref(true)
+const isBefore = ref(true)
 const col = ref(0)
 const row = ref(2)
 
 function newTree(initTree: TreeNode) {
   if (isAddRow.value && isAddCol.value) {
     const newT = AddSpanForRow(initTree, row.value)
-    return AddNodeBeforeCol(newT, col.value)
+    return AddNodeCol(newT, col.value, isBefore.value)
 
     // // also works
-    // const newT = AddNodeBeforeCol(initTree, col.value)
+    // const newT = AddNodeBeforeCol(initTree, col.value, isBefore.value)
     // return AddSpanForRow(newT, row.value)
   }
 
   if (isAddCol.value)
-    return AddNodeBeforeCol(initTree, col.value)
+    return AddNodeCol(initTree, col.value, isBefore.value)
 
   if (isAddRow.value)
     return AddSpanForRow(initTree, row.value)
@@ -36,7 +37,7 @@ function newTree(initTree: TreeNode) {
   return initTree
 }
 const newT = ref(newTree(initTree))
-watch([col, isAddCol, row, isAddRow], () => {
+watch([col, isAddCol, row, isAddRow, isBefore], () => {
   newT.value = newTree(initTree)
 })
 </script>
@@ -46,6 +47,7 @@ watch([col, isAddCol, row, isAddRow], () => {
   <AddControls
     v-model:isAddCol="isAddCol" v-model:isAddRow="isAddRow"
     v-model:col="col" v-model:row="row"
+    v-model:isBefore="isBefore"
     :max-col="table.data[0].length - 1"
     :max-row="table.data.length - 1"
   />
