@@ -12,6 +12,7 @@ export interface Tree {
 
 export interface TableCell {
   node: TreeNode | undefined
+  nodePath: number[] | undefined
   xLocal: number
   yLocal: number
 }
@@ -27,6 +28,7 @@ export interface TableCellPrint {
   color: string | undefined
   x: number
   y: number
+  path: number[] | undefined
 }
 
 export interface TablePrint {
@@ -47,6 +49,7 @@ export function ToPrint(table: Table): TablePrint {
         color: table.data[i][j].node?.Color,
         x: table.data[i][j].xLocal,
         y: table.data[i][j].yLocal,
+        path: table.data[i][j].nodePath,
       }
     }
   }
@@ -55,15 +58,13 @@ export function ToPrint(table: Table): TablePrint {
 
 export function ConvertTreeToTable(tree: TreeNode): Table {
   const table: Table = { data: [] }
-  //   const initColsCount = tree.Children.length
   table.data[0] = []
-  //   for (let i = 0; i < initColsCount; i++) {
   table.data[0][0] = {
     node: tree,
+    nodePath: [],
     xLocal: 0,
     yLocal: 0,
   }
-  //   }
   return table
 }
 
@@ -95,27 +96,25 @@ export function ColumnAddLeft(table: Table, index: number) {
     const currentCell = JSON.parse(JSON.stringify(table.data[i][index]))
     table.data[i].splice(index, 0, currentCell)
   }
-
-  RenumberLastRowXLocal(table)
 }
 
 export function ColumnAddMissing(table: Table) {
   const rows = table.data.length
   let cols = table.data[0].length
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      cols = table.data[0].length
-      const curr = table.data[i][j]
-      const next = table.data[i][j + 1]
-      if (next && curr.node?.Value === next.node?.Value)
-        continue
-      if (curr.node && curr.node.Children.length === 0)
-        continue
-      if (curr.node && curr.xLocal === curr.node.Children.length - 1)
-        continue
-      ColumnAddLeft(table, j)
-      j = -1
-    }
+  const i = rows - 1
+  for (let j = 0; j < cols; j++) {
+    cols = table.data[0].length
+    const curr = table.data[i][j]
+    const next = table.data[i][j + 1]
+    if (next && curr.node?.Value === next.node?.Value)
+      continue
+    if (curr.node && curr.node.Children.length === 0)
+      continue
+    if (curr.node && curr.xLocal === curr.node.Children.length - 1)
+      continue
+    ColumnAddLeft(table, j)
+    RenumberLastRowXLocal(table)
+    j = -1
   }
 }
 
@@ -141,6 +140,7 @@ export function TableAddEmptyRow(table: Table) {
   for (let j = 0; j < cols; j++) {
     emptyRow.push({
       node: undefined,
+      nodePath: undefined,
       xLocal: -1,
       yLocal: -1,
     })
@@ -165,6 +165,7 @@ export function TableFillLastRow(table: Table) {
       currentCell.node = prevCell.node
       currentCell.xLocal = prevCell.xLocal
       currentCell.yLocal = prevCell.yLocal + 1
+      currentCell.nodePath = prevCell.nodePath
       continue
     }
 
@@ -174,6 +175,10 @@ export function TableFillLastRow(table: Table) {
       ]
       currentCell.xLocal = 0
       currentCell.yLocal = 0
+      currentCell.nodePath = prevCell.nodePath?.slice()
+      currentCell.nodePath?.push(prevCell.xLocal)
+      //   currentCell.nodePath = JSON.parse(JSON.stringify(
+      //     prevCell.node)).push()
       continue
     }
   }

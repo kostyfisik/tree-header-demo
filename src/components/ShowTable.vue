@@ -1,9 +1,27 @@
 <script setup lang="ts">
-import type { TablePrint } from '../TreeTools'
+import type { TableCellPrint, TablePrint } from '../TreeTools'
 const props = defineProps<{
   table: TablePrint
 }>()
+function setStyle(table: TablePrint, i: number,
+  j: number): string {
+  const cell = table.data[i][j]
+  let formatString = `background-color: ${cell.color};`
+  const borderWidth = '4px'
+  if (j > 0) {
+    const cellLeft = table.data[i][j - 1]
+    if (JSON.stringify(cell.path) !== JSON.stringify(cellLeft.path))
+      formatString += `\nborder-left: ${borderWidth} solid black;`
+  }
+  if (i > 0) {
+    const cellUp = table.data[i - 1][j]
+    if (JSON.stringify(cell.path) !== JSON.stringify(cellUp.path))
+      formatString += `\nborder-top: ${borderWidth} solid black;`
+  }
+  // border: 2px solid gray;
 
+  return formatString
+}
 // console.log(props.table)
 </script>
 
@@ -13,13 +31,13 @@ const props = defineProps<{
       <td
         v-for="(cell, index2) in row"
         :key="index2"
-        :style="`background-color: ${cell.color};`"
+        :style="setStyle(props.table, index1, index2)"
       >
         <span v-for="(val, key) in cell" :key="key">
           <span v-if="key !== 'color'">
             {{ key }}: {{ val }}
           </span>
-          <span v-if="key === 's' || key === 'v'"><br></span>
+          <span v-if="key === 's' || key === 'v' || key === 'y'"><br></span>
           <span v-if="key === 'x' || key === 'h'">&nbsp;</span>
         </span>
       </td>
@@ -30,7 +48,6 @@ const props = defineProps<{
 
 <style>
 table, th, td {
-  border: 2px solid gray;
   color: black;
   background-color: white;
   padding: 10px;
