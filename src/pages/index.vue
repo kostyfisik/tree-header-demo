@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { cloneDeep } from 'lodash'
 import {
   AddNodeBeforeCol,
+  AddSpanForRow,
   ConvertTreeToTable,
   ToPrint,
 } from '../TreeTools'
 import { initTree } from '../initTree'
-import type { TreeNode } from './TreeTools'
+import type { TreeNode } from '../TreeTools'
 
 Object.freeze(initTree)
 // const updatedTree = ref(initTree)
@@ -14,16 +14,29 @@ Object.freeze(initTree)
 const table = ConvertTreeToTable(initTree)
 const isAddCol = ref(true)
 const isAddRow = ref(true)
-const col = ref(2)
-const row = ref(0)
+const col = ref(0)
+const row = ref(2)
 
 function newTree(initTree: TreeNode) {
+  if (isAddRow.value && isAddCol.value) {
+    const newT = AddSpanForRow(initTree, row.value)
+    return AddNodeBeforeCol(newT, col.value)
+
+    // // also works
+    // const newT = AddNodeBeforeCol(initTree, col.value)
+    // return AddSpanForRow(newT, row.value)
+  }
+
   if (isAddCol.value)
     return AddNodeBeforeCol(initTree, col.value)
+
+  if (isAddRow.value)
+    return AddSpanForRow(initTree, row.value)
+
   return initTree
 }
 const newT = ref(newTree(initTree))
-watch([col, isAddCol], () => {
+watch([col, isAddCol, row, isAddRow], () => {
   newT.value = newTree(initTree)
 })
 </script>
@@ -39,11 +52,11 @@ watch([col, isAddCol], () => {
   <!-- <ShowTable :table="ToPrint(ConvertTreeToTable(newTree(initTree)))" /> -->
   <ShowTable :table="ToPrint(ConvertTreeToTable(newT))" />
   <!-- <ShowTable :table="ToPrint(ConvertTreeToTable(newT2))" /> -->
-  <!-- <div>
+  <div>
     <pre class="text-left">
-{{ JSON.stringify(updatedTree, null, 2) }}
+{{ JSON.stringify(newT, null, 2) }}
     </pre>
-  </div> -->
+  </div>
 </template>
 
 <route lang="yaml">

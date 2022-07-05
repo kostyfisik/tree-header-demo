@@ -11,7 +11,14 @@ const emit = defineEmits(['update:isAddCol', 'update:isAddRow',
   'update:col', 'update:row',
 ])
 const isAddCol = ref(true)
-watch(isAddCol, () => emit('update:isAddCol', isAddCol.value))
+const isAddRow = ref(true)
+watch(isAddCol, () => {
+  emit('update:isAddCol', isAddCol.value)
+})
+
+watch(isAddRow, () => {
+  emit('update:isAddRow', isAddRow.value)
+})
 const colInput = ref('0')
 emit('update:col', 0)
 const col = computed(() => {
@@ -29,8 +36,6 @@ const col = computed(() => {
   return init
 })
 
-const isAddRow = ref(true)
-watch(isAddRow, () => emit('update:isAddRow', isAddRow.value))
 const rowInput = ref('0')
 const row = computed(() => {
   if (isNaN(parseInt(rowInput.value)) || rowInput.value === '') {

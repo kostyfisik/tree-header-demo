@@ -37,7 +37,10 @@ function setStyle(table: TablePrint, i: number,
         :style="setStyle(props.table, index1, index2)"
       >
         <span v-for="(val, key) in cell" :key="key">
-          <span v-if="key !== 'color'">
+          <span
+            v-if="key !== 'color'"
+            :class=" key === 's' ? 'font-extrabold text-lg' : ''"
+          >
             {{ key }}: {{ val }}
           </span>
           <span v-if="key === 's' || key === 'v' || key === 'y'"><br></span>

@@ -199,7 +199,7 @@ export function TableAddMissingCells(table: Table) {
 export function AddNodeBeforeCol(initTree: TreeNode, col: number) {
   const table = ConvertTreeToTable(initTree)
   const cellToCopy = table.data[table.data.length - 1][col]
-  const newTree = produce(initTree, (draftTree) => {
+  return produce(initTree, (draftTree) => {
     const path = cellToCopy.nodePath
     if (!path)
       throw new Error('uninitialized path')
@@ -210,11 +210,28 @@ export function AddNodeBeforeCol(initTree: TreeNode, col: number) {
     let node = draftTree
     for (const i of path)
       node = node.Children[i]
-    node.Color = 'white'
     const ChildrenCopy = JSON.parse(JSON.stringify(node.Children[childIndex]))
     ChildrenCopy.Color = 'Blue'
     node.Children.splice(childIndex, 0, ChildrenCopy)
   })
-
-  return newTree
 }
+
+export function AddSpanForRow(initTree: TreeNode, row: number) {
+  const table = ConvertTreeToTable(initTree)
+  return produce(initTree, (draftTree) => {
+    const rowToChange = table.data[row]
+    let path = ''
+    for (const cell of rowToChange) {
+      if (!cell.node || !cell.nodePath)
+        throw new Error('invalid table')
+      if (JSON.stringify(cell.nodePath) === path)
+        continue
+      path = JSON.stringify(cell.nodePath)
+      let node = draftTree
+      for (const i of cell.nodePath)
+        node = node.Children[i]
+      node.VerticalSpan += 1
+    }
+  })
+}
+
