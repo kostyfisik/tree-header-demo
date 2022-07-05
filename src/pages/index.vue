@@ -23,7 +23,7 @@ function newTree(initTree: TreeNode) {
   return initTree
 }
 const newT = ref(newTree(initTree))
-watch(col, () => {
+watch([col, isAddCol], () => {
   newT.value = newTree(initTree)
 })
 </script>
