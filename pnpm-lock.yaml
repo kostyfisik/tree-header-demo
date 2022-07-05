@@ -10,12 +10,15 @@ specifiers:
   '@vue/test-utils': ^2.0.1
   '@vueuse/core': ^8.7.5
   '@vueuse/head': ^0.7.6
+  buefy: ^0.9.21
   critters: ^0.0.16
   cross-env: ^7.0.3
   cypress: ^9.7.0
   eslint: ^8.18.0
   eslint-plugin-cypress: ^2.12.1
   https-localhost: ^4.7.1
+  immer: ^9.0.15
+  lodash: ^4.17.21
   markdown-it-link-attributes: ^4.0.0
   markdown-it-prism: ^2.2.4
   nprogress: ^0.2.0
@@ -44,6 +47,9 @@ specifiers:
 dependencies:
   '@vueuse/core': 8.7.5_vue@3.2.37
   '@vueuse/head': 0.7.6_vue@3.2.37
+  buefy: 0.9.21_vue@3.2.37
+  immer: 9.0.15
+  lodash: 4.17.21
   nprogress: 0.2.0
   pinia: 2.0.14_typescript@4.7.4+vue@3.2.37
   prism-theme-vars: 0.2.3
@@ -2600,6 +2606,16 @@ packages:
       picocolors: 1.0.0
     dev: true
 
+  /buefy/0.9.21_vue@3.2.37:
+    resolution: {integrity: sha512-geOJgzi5jFDyRJ9Zl0379yyRBatZ6Qg83kRnCJTb7/nCuXcfXd/eis3tFaDTGuntnfv2MezHzc092OIHwgRwAg==}
+    engines: {node: '>= 4.0.0', npm: '>= 3.0.0'}
+    peerDependencies:
+      vue: ^2.6.11
+    dependencies:
+      bulma: 0.9.3
+      vue: 3.2.37
+    dev: false
+
   /buffer-crc32/0.2.13:
     resolution: {integrity: sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==}
     dev: true
@@ -2625,6 +2641,10 @@ packages:
     dependencies:
       semver: 7.3.7
     dev: true
+
+  /bulma/0.9.3:
+    resolution: {integrity: sha512-0d7GNW1PY4ud8TWxdNcP6Cc8Bu7MxcntD/RRLGWuiw/s0a9P+XlH/6QoOIrmbj6o8WWJzJYhytiu9nFjTszk1g==}
+    dev: false
 
   /bytes/3.0.0:
     resolution: {integrity: sha1-0ygVQE1olpn4Wk6k+odV3ROpYEg=}
@@ -4611,6 +4631,10 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
+  /immer/9.0.15:
+    resolution: {integrity: sha512-2eB/sswms9AEUSkOm4SbV5Y7Vmt/bKRwByd52jfLkW4OLYeaTP3EEiJ9agqU0O/tq6Dk62Zfj+TJSqfm1rLVGQ==}
+    dev: false
+
   /import-fresh/3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -5217,7 +5241,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /log-symbols/4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}

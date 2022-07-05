@@ -1,67 +1,45 @@
 <script setup lang="ts">
-/* eslint-disable no-console */
-import type { TreeNode } from '../TreeTools'
+import { cloneDeep } from 'lodash'
 import {
-  ColumnAddLeft,
+  AddNodeBeforeCol,
   ConvertTreeToTable,
-  TableAddMissingCells,
-  ToPrint, isRowNeeded,
+  ToPrint,
 } from '../TreeTools'
+import { initTree } from '../initTree'
+import type { TreeNode } from './TreeTools'
 
-const initTree: TreeNode = {
-  VerticalSpan: 1,
-  Color: 'White',
-  Value: 'Table',
-  Children: [
-    {
-      VerticalSpan: 1,
-      Color: 'Orange',
-      Value: '1',
-      Children: [
-        {
-          VerticalSpan: 1,
-          Color: 'Green',
-          Value: '4',
-          Children: [{ VerticalSpan: 1, Color: 'Purple', Value: '7', Children: [] }],
-        },
-        {
-          VerticalSpan: 1,
-          Color: 'Green',
-          Value: '5',
-          Children: [{ VerticalSpan: 1, Color: 'Purple', Value: '8', Children: [] }],
-        },
-      ],
-    },
-    {
-      VerticalSpan: 1,
-      Color: 'Orange',
-      Value: '2',
-      Children: [{ VerticalSpan: 2, Color: 'Green', Value: '6', Children: [] }],
-    },
-    {
-      VerticalSpan: 2,
-      Color: 'Orange',
-      Value: '3',
-      Children: [
-        { VerticalSpan: 1, Color: 'Purple', Value: '9', Children: [] },
-        { VerticalSpan: 1, Color: 'Purple', Value: '10', Children: [] },
-      ],
-    },
-  ],
-}
+const updatedTree = ref(initTree)
 
 const table = ConvertTreeToTable(initTree)
-TableAddMissingCells(table)
-// ColumnAddLeft(table, 0)
-console.log('after all', table.data)
+const isAddCol = ref(true)
+const isAddRow = ref(true)
+const col = ref(0)
+const row = ref(0)
 
-// console.log(table)
+function newTree(initTree: TreeNode) {
+  const copy = cloneDeep(initTree)
+  if (isAddCol.value)
+    return AddNodeBeforeCol(copy, col.value)
+  //   if (isAddCol.value)
+  //     return AddNodeBeforeCol(initTree, col.value)
+  return initTree
+}
 </script>
 
 <template>
-  <div><ShowTable :table="ToPrint(table)" /></div>
-
-  is row needed = {{ isRowNeeded(table) }}
+  <ShowTable :table="ToPrint(table)" />
+  <AddControls
+    v-model:isAddCol="isAddCol" v-model:isAddRow="isAddRow"
+    v-model:col="col" v-model:row="row"
+    :max-col="table.data[0].length - 1"
+    :max-row="table.data.length - 1"
+  />
+  <ShowTable :table="ToPrint(ConvertTreeToTable(newTree(initTree)))" />
+  <div>
+    <pre class="text-left">
+{{ JSON.stringify(updatedTree, null, 2) }}
+    </pre>
+  </div>
 </template>
 
 <route lang="yaml">

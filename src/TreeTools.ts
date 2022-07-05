@@ -1,3 +1,6 @@
+import produce, { enableAllPlugins } from 'immer'
+enableAllPlugins()
+
 export interface TreeNode {
   VerticalSpan: number
   Color: string
@@ -65,6 +68,7 @@ export function ConvertTreeToTable(tree: TreeNode): Table {
     xLocal: 0,
     yLocal: 0,
   }
+  TableAddMissingCells(table)
   return table
 }
 
@@ -192,4 +196,30 @@ export function TableAddMissingCells(table: Table) {
     if (table.data.length > 42)
       break
   }
+}
+
+export function AddNodeBeforeCol(initTree: TreeNode, col: number) {
+  const table = ConvertTreeToTable(initTree)
+  const cellToCopy = table.data[table.data.length - 1][col]
+  const newTree = produce(initTree, (draftTree) => {
+    const path = cellToCopy.nodePath
+    if (!path)
+      throw new Error('uninitialized path')
+    const childIndex = path.pop()
+    if (childIndex === undefined)
+      throw new Error('table content not found')
+
+    let node = draftTree
+    for (const i of path)
+      node = node.Children[i]
+    node.Color = 'white'
+    console.log('node', node.Value)
+    const ChildrenCopy = JSON.parse(JSON.stringify(node.Children[childIndex]))
+    console.log('child', ChildrenCopy.Value)
+    ChildrenCopy.Color = 'Blue'
+    // node.Children.push(ChildrenCopy)
+
+    node.Children.splice(childIndex, 0, ChildrenCopy)
+  })
+  return newTree
 }

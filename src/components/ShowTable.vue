@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { TableCellPrint, TablePrint } from '../TreeTools'
+import type {
+//   TableCellPrint,
+  TablePrint,
+} from '../TreeTools'
 const props = defineProps<{
   table: TablePrint
 }>()
@@ -26,7 +29,7 @@ function setStyle(table: TablePrint, i: number,
 </script>
 
 <template>
-  <div>
+  <table class="mx-auto">
     <tr v-for="(row, index1) in props.table.data" :key="index1">
       <td
         v-for="(cell, index2) in row"
@@ -42,8 +45,7 @@ function setStyle(table: TablePrint, i: number,
         </span>
       </td>
     </tr>
-    <!-- test table print -->
-  </div>
+  </table>
 </template>
 
 <style>
