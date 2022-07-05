@@ -8,22 +8,24 @@ import {
 import { initTree } from '../initTree'
 import type { TreeNode } from './TreeTools'
 
-const updatedTree = ref(initTree)
+Object.freeze(initTree)
+// const updatedTree = ref(initTree)
 
 const table = ConvertTreeToTable(initTree)
 const isAddCol = ref(true)
 const isAddRow = ref(true)
-const col = ref(0)
+const col = ref(2)
 const row = ref(0)
 
 function newTree(initTree: TreeNode) {
-  const copy = cloneDeep(initTree)
   if (isAddCol.value)
-    return AddNodeBeforeCol(copy, col.value)
-  //   if (isAddCol.value)
-  //     return AddNodeBeforeCol(initTree, col.value)
+    return AddNodeBeforeCol(initTree, col.value)
   return initTree
 }
+const newT = ref(newTree(initTree))
+watch(col, () => {
+  newT.value = newTree(initTree)
+})
 </script>
 
 <template>
@@ -34,12 +36,14 @@ function newTree(initTree: TreeNode) {
     :max-col="table.data[0].length - 1"
     :max-row="table.data.length - 1"
   />
-  <ShowTable :table="ToPrint(ConvertTreeToTable(newTree(initTree)))" />
-  <div>
+  <!-- <ShowTable :table="ToPrint(ConvertTreeToTable(newTree(initTree)))" /> -->
+  <ShowTable :table="ToPrint(ConvertTreeToTable(newT))" />
+  <!-- <ShowTable :table="ToPrint(ConvertTreeToTable(newT2))" /> -->
+  <!-- <div>
     <pre class="text-left">
 {{ JSON.stringify(updatedTree, null, 2) }}
     </pre>
-  </div>
+  </div> -->
 </template>
 
 <route lang="yaml">

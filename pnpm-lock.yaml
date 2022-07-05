@@ -18,6 +18,7 @@ specifiers:
   eslint-plugin-cypress: ^2.12.1
   https-localhost: ^4.7.1
   immer: ^9.0.15
+  immutability-helper: ^3.1.1
   lodash: ^4.17.21
   markdown-it-link-attributes: ^4.0.0
   markdown-it-prism: ^2.2.4
@@ -49,6 +50,7 @@ dependencies:
   '@vueuse/head': 0.7.6_vue@3.2.37
   buefy: 0.9.21_vue@3.2.37
   immer: 9.0.15
+  immutability-helper: 3.1.1
   lodash: 4.17.21
   nprogress: 0.2.0
   pinia: 2.0.14_typescript@4.7.4+vue@3.2.37
@@ -4633,6 +4635,10 @@ packages:
 
   /immer/9.0.15:
     resolution: {integrity: sha512-2eB/sswms9AEUSkOm4SbV5Y7Vmt/bKRwByd52jfLkW4OLYeaTP3EEiJ9agqU0O/tq6Dk62Zfj+TJSqfm1rLVGQ==}
+    dev: false
+
+  /immutability-helper/3.1.1:
+    resolution: {integrity: sha512-Q0QaXjPjwIju/28TsugCHNEASwoCcJSyJV3uO1sOIQGI0jKgm9f41Lvz0DZj3n46cNCyAZTsEYoY4C2bVRUzyQ==}
     dev: false
 
   /import-fresh/3.3.0:

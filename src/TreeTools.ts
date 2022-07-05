@@ -181,8 +181,6 @@ export function TableFillLastRow(table: Table) {
       currentCell.yLocal = 0
       currentCell.nodePath = prevCell.nodePath?.slice()
       currentCell.nodePath?.push(prevCell.xLocal)
-      //   currentCell.nodePath = JSON.parse(JSON.stringify(
-      //     prevCell.node)).push()
       continue
     }
   }
@@ -213,13 +211,10 @@ export function AddNodeBeforeCol(initTree: TreeNode, col: number) {
     for (const i of path)
       node = node.Children[i]
     node.Color = 'white'
-    console.log('node', node.Value)
     const ChildrenCopy = JSON.parse(JSON.stringify(node.Children[childIndex]))
-    console.log('child', ChildrenCopy.Value)
     ChildrenCopy.Color = 'Blue'
-    // node.Children.push(ChildrenCopy)
-
     node.Children.splice(childIndex, 0, ChildrenCopy)
   })
+
   return newTree
 }
